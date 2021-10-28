@@ -24,6 +24,17 @@
 			When the program starts<br>Works only at the beggining
 		</div>
 	</template>
+	<!-- save-load blocks-->
+	<template>
+		<div class="block save-load" code="canvas.save();">
+			Save
+		</div>
+	</template>
+	<template>
+		<div class="block save-load" code="canvas.restore();">
+			Load latest save
+		</div>
+	</template>
 	<!-- canvas related blocks -->
 	<template>
 		<div class="block canvas" code="canvas.clearRect(0, 0, 10000, 10000);">
@@ -33,6 +44,12 @@
 	<template>
 		<div class="block canvas" code="canvas.stroke();">
 			Stroke
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.lineWidth = valueOfNum('width')">
+			Set line width to&nbsp;
+			<input type="number" name="number" step="any" value="1">
 		</div>
 	</template>
 	<template>
@@ -131,6 +148,7 @@
 			<input type="color" name="color" value="#FF0000">
 		</div>
 	</template>
+	<!-- draw related blocks -->
 	<template>
 		<div class="block draw" code="canvas.moveTo(valueOfNum('x'), valueOfNum('y'));">
 			Set drawing point to x:&nbsp;
@@ -150,6 +168,18 @@
 	<template>
 		<div class="block draw" code="canvas.fillRect(valueOfNum('x'), valueOfNum('y'), valueOfNum('w'), valueOfNum('h'));">
 			Fill rectangle from x:&nbsp;
+			<input type="number" name="x" step="any" value="0">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" step="any" value="0">
+			&nbsp;width:&nbsp;
+			<input type="number" name="w" step="any" value="100">
+			&nbsp;height:&nbsp;
+			<input type="number" name="h" step="any" value="100">
+		</div>
+	</template>
+	<template>
+		<div class="block draw" code="canvas.strokeRect(valueOfNum('x'), valueOfNum('y'), valueOfNum('w'), valueOfNum('h'));">
+			Carve rectangle from x:&nbsp;
 			<input type="number" name="x" step="any" value="0">
 			&nbsp;y:&nbsp;
 			<input type="number" name="y" step="any" value="0">
