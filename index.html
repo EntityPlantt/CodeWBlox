@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CodeWBlox</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+	<div id="toolbar">
+		<button onclick="moveBlockToSpace()">Move to space</button>
+		<button onclick="disposeBlock()">Dispose</button>
+		<button onclick="runProgram()">Run</button>
+	</div>
+	<div id="blocks"></div>
+	<div id="space"></div>
+	<canvas id="preview" draggable ondblclick="this.requestFullscreen()"></canvas>
+</body>
+<templates name="blocks">
+	<!-- events -->
+	<template>
+		<div class="block event" name="start">
+			When the program starts<br>Works only at the beggining
+		</div>
+	</template>
+	<!-- canvas related blocks -->
+	<template>
+		<div class="block canvas" code="canvas.clearRect(0, 0, 10000, 10000);">
+			Clear area
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.stroke();">
+			Stroke
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.fillStyle = valueOf('color');">
+			Set fill style color to&nbsp;
+			<input type="color" name="color" value="#FF0000">
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.fillStyle = gradients[valueOfNum('gradientIndex')];">
+			Set fill style to gradient number&nbsp;
+			<input type="number" name="gradientIndex" step="1" min="0" value="0">
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.strokeStyle = valueOf('color');">
+			Set stroke style color to&nbsp;
+			<input type="color" name="color" value="#FF0000">
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.strokeStyle = gradients[valueOfNum('gradientIndex')];">
+			Set stroke style to gradient number&nbsp;
+			<input type="number" name="gradientIndex" step="1" min="0" value="0">
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.shadowColor = valueOf('color');">
+			Set shadow color to&nbsp;
+			<input type="color" name="color" value="#FF0000">
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.shadowBlur = valueOfNum('strength');">
+			Set shadow strength to&nbsp;
+			<input type="number" name="strength" value="10" min="0" step="any">
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.shadowOffsetX = valueOfNum('x'); canvas.shadowOffsetY = valueOfNum('y');">
+			Set shadow offset to x:&nbsp;
+			<input type="number" name="x" value="0" step="any">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" value="0" step="any">
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.font = valueOfNum('size') + 'px ' + valueOfSelect('font');">
+			Set font to&nbsp;
+			<select name="font">
+				<option>Sans-Serif</option>
+				<option>Serif</option>
+				<option>Monospace</option>
+				<option>Courier</option>
+				<option>Fantasy</option>
+				<option>Cursive</option>
+			</select>
+			&nbsp;and size&nbsp;
+			<input type="number" name="size" step="any" min="0" value="20">
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="canvas.textAlign = valueOfSelect('textAlign');">
+			Set text align to&nbsp;
+			<select name="textAlign">
+				<option value="left">Left</option>
+				<option value="center" selected>Center</option>
+				<option value="right">Right</option>
+				<option value="justify">Justify</option>
+			</select>
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="gradients.push(canvas.createLinearGradient(
+			valueOfNum('startX'),
+			valueOfNum('startY'),
+			valueOfNum('endX'),
+			valueOfNum('endY')));">
+			Add linear gradient with starting x:&nbsp;
+			<input type="number" name="startX" step="any" value="0">
+			&nbsp;y:&nbsp;
+			<input type="number" name="startY" step="any" value="0">
+			&nbsp;and end x:&nbsp;
+			<input type="number" name="endX" step="any" value="200">
+			&nbsp;y:&nbsp;
+			<input type="number" name="endY" step="any" value="0">
+		</div>
+	</template>
+	<template>
+		<div class="block canvas" code="gradients[valueOfNum('gradientIndex')].addColorStop(valueOfNum('place'), valueOf('color'));">
+			Add color stop of gradient number&nbsp;
+			<input type="number" name="gradientIndex" step="1" min="0" value="0">
+			&nbsp;at place&nbsp;
+			<input type="number" name="place" step="any" min="0" max="1" value="0">
+			&nbsp;with color&nbsp;
+			<input type="color" name="color" value="#FF0000">
+		</div>
+	</template>
+	<template>
+		<div class="block draw" code="canvas.moveTo(valueOfNum('x'), valueOfNum('y'));">
+			Set drawing point to x:&nbsp;
+			<input type="number" name="x" step="any" value="0">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" step="any" value="0">
+		</div>
+	</template>
+	<template>
+		<div class="block draw" code="canvas.lineTo(valueOfNum('x'), valueOfNum('y'));">
+			Draw a line to x:&nbsp;
+			<input type="number" name="x" step="any" value="100">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" step="any" value="100">
+		</div>
+	</template>
+	<template>
+		<div class="block draw" code="canvas.fillRect(valueOfNum('x'), valueOfNum('y'), valueOfNum('w'), valueOfNum('h'));">
+			Fill rectangle from x:&nbsp;
+			<input type="number" name="x" step="any" value="0">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" step="any" value="0">
+			&nbsp;width:&nbsp;
+			<input type="number" name="w" step="any" value="100">
+			&nbsp;height:&nbsp;
+			<input type="number" name="h" step="any" value="100">
+		</div>
+	</template>
+	<template>
+		<div class="block draw" code="canvas.arc(valueOfNum('x'), valueOfNum('y'), valueOfNum('radius'), 0, 2 * Math.PI);">
+			Draw a circle on x:&nbsp;
+			<input type="number" name="x" step="any" value="100">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" step="any" value="100">
+			&nbsp;with radius&nbsp;
+			<input type="number" name="radius" step="any" value="50">
+		</div>
+	</template>
+	<template>
+		<div class="block draw" code="canvas.strokeText(valueOf('text'), valueOfNum('x'), valueOfNum('y'));">
+			Carve text at x:&nbsp;
+			<input type="number" name="x" value="10" step="any">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" value="50" step="any">
+			&nbsp;text:&nbsp;
+			<input type="text" name="text" value="Hello world!">
+		</div>
+	</template>
+	<template>
+		<div class="block draw" code="canvas.fillText(valueOf('text'), valueOfNum('x'), valueOfNum('y'));">
+			Fill text at x:&nbsp;
+			<input type="number" name="x" value="10" step="any">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" value="50" step="any">
+			&nbsp;text:&nbsp;
+			<input type="text" name="text" value="Hello world!">
+		</div>
+	</template>
+	<template>
+		<div class="block draw" code="
+			var image = document.createElement('img');
+			image.src = valueOf('image');
+			image.width = valueOfNum('w');
+			image.height = valueOfNum('h');
+			canvas.drawImage(image, valueOfNum('x'), valueOfNum('y'));
+		">
+			Paste image with url:&nbsp;
+			<input type="url" name="image" placeholder="https://example.com/image.png">
+			&nbsp;width:&nbsp;
+			<input type="number" name="w" step="any" min="0" value="100">
+			&nbsp;height:&nbsp;
+			<input type="number" name="h" step="any" min="0" value="100">
+			&nbsp;x:&nbsp;
+			<input type="number" name="x" step="any" min="0" value="100">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" step="any" min="0" value="100">
+		</div>
+	</template>
+	<!-- program flow blocks -->
+	<template>
+		<div class="block flow" code="setTimeout(function(){runSnippet(thisBlock);}, valueOfNum('seconds') * 1000);">
+			Wait&nbsp;
+			<input type="number" name="seconds" step="any" value="1">
+			&nbsp;seconds to do:
+		</div>
+	</template>
+	<template>
+		<div class="block flow" code="intervals.push(setInterval(function(){runSnippet(thisBlock);}, valueOfNum('seconds') * 1000));">
+			Add interval:
+			<br>
+			Every&nbsp;
+			<input type="number" name="seconds" step="any" value="1">
+			&nbsp;seconds do:
+		</div>
+	</template>
+	<template>
+		<div class="block flow" code="while (intervals.length > 0) {clearInterval(intervals[0]); intervals.unshift();}">
+			Clear all intervals
+		</div>
+	</template>
+</templates>
+</html>
