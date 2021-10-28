@@ -71,6 +71,9 @@ div.block {
 div.block.draw {
 	background-color: darkred;
 }
+div.block.save-load {
+	background-color: rebeccapurple;
+}
 div.block.event {
 	background-color: goldenrod;
 }
