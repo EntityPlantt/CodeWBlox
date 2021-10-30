@@ -1,0 +1,41 @@
+<div class="block event" name="start" draggable="true" style="position: absolute; top: 8px; left: 117px;">
+			When the program starts<br>Works only at the beggining
+		<button class="selectButton" onclick="selectBlock(this.parentElement);">Select</button><div class="block canvas" code="canvas.clearRect(0, 0, 10000, 10000);" draggable="null" style="">
+			Clear area
+		<button class="selectButton" onclick="selectBlock(this.parentElement);">Select</button></div><div class="block canvas" code="canvas.fillStyle = valueOf('color');" draggable="null" style="">
+			Set fill style color to&nbsp;
+			<input type="color" name="color" value="#FF0000">
+		<button class="selectButton" onclick="selectBlock(this.parentElement);">Select</button></div><div class="block canvas" code="canvas.shadowColor = valueOf('color');" draggable="null" style="">
+			Set shadow color to&nbsp;
+			<input type="color" name="color" value="#FF0000">
+		<button class="selectButton" onclick="selectBlock(this.parentElement);">Select</button></div><div class="block canvas" code="canvas.shadowBlur = valueOfNum('strength');" draggable="null" style="">
+			Set shadow strength to&nbsp;
+			<input type="number" name="strength" value="10" min="0" step="any">
+		<button class="selectButton" onclick="selectBlock(this.parentElement);">Select</button></div><div class="block canvas" code="canvas.font = valueOfNum('size') + 'px ' + valueOfSelect('font');" draggable="null" style="">
+			Set font to&nbsp;
+			<select name="font">
+				<option>Sans-Serif</option>
+				<option>Serif</option>
+				<option>Monospace</option>
+				<option>Courier</option>
+				<option>Fantasy</option>
+				<option>Cursive</option>
+			</select>
+			&nbsp;and size&nbsp;
+			<input type="number" name="size" step="any" min="0" value="20">
+		<button class="selectButton" onclick="selectBlock(this.parentElement);">Select</button></div><div class="block canvas" code="canvas.textAlign = valueOfSelect('textAlign');" draggable="null" style="">
+			Set text align to&nbsp;
+			<select name="textAlign">
+				<option value="left">Left</option>
+				<option value="center" selected="">Center</option>
+				<option value="right">Right</option>
+				<option value="justify">Justify</option>
+			</select>
+		<button class="selectButton" onclick="selectBlock(this.parentElement);">Select</button></div><div class="block draw" code="canvas.fillText(valueOf('text'), valueOfNum('x'), valueOfNum('y'));" draggable="null" style="">
+			Fill text at x:&nbsp;
+			<input type="number" name="x" value="10" step="any">
+			&nbsp;y:&nbsp;
+			<input type="number" name="y" value="50" step="any">
+			&nbsp;text:&nbsp;
+			<input type="text" name="text" value="Hello world!">
+		<button class="selectButton" onclick="selectBlock(this.parentElement);">Select</button></div></div>
