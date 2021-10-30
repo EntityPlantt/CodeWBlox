@@ -1,0 +1,13 @@
+body {
+	background-color: beige;
+}
+div#upload-form {
+	background-color: white;
+	color: black;
+	border: 2px solid black;
+	position: absolute;
+	width: calc(50% - 40px);
+	left: 25%;
+	top: 20vh;
+	padding: 20px;
+}
