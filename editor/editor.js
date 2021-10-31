@@ -27,8 +27,8 @@ window.onload = function() {
     delCookie("loaded-proj");
   }
   if (getCookie("loaded-proj") != null) {
-    delCookie("loaded-proj");
     document.getElementById("space").innerHTML = getCookie("loaded-proj");
+    delCookie("loaded-proj");
   }
 }
 
