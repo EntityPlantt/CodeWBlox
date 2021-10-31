@@ -22,6 +22,8 @@ window.onload = function() {
 		document.getElementById("radios").appendChild(document.createElement("br"));
 	}
 	document.querySelector("div#radios input[type=radio]").remove();
+	document.querySelector("div#radios label").remove();
+	document.querySelector("div#radios br").remove();
 }
 function loadCode() {
 	var fileContent = getCookie(document.querySelector("input[name=projects]:checked").id);
