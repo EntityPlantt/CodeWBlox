@@ -4,47 +4,30 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>CodeWBlox - Draw on canvas!</title>
-	<link rel="stylesheet" type="text/css" href="universal-styles.css">
-	<link rel="stylesheet" type="text/css" href="home-styles.css">
-	<script type="text/javascript" src="lib.js"></script>
-	<script type="text/javascript">
-		window.onload = function() {
-			const projects = NumberOfProjectsOnSite();
-			var i = projects - 1500;
-			if (i < 0) i = 0;
-			var intrvl = setInterval(function() {
-				document.getElementById("numberOfProjects").innerText = i++;
-				if (i == projects) clearInterval(intrvl);
-			}, 2);
-		}
-	</script>
-	<link rel="icon" type="image/png" href="codewblox-logo.png">
+	<link rel="icon" type="image/png" href="assets/codewblox-logo.png">
+	<link rel="stylesheet" type="text/css" href="assets/style.css">
+	<link rel="stylesheet" type="text/css" href="home.css">
 </head>
 <body>
-	<div id="top-bar">
-		<a href="index.html" class="hidden">
-			<img src="codewblox-logo.png" id="logo">
-			<span id="name">CodeWBlox</span>
+	<div id="top">
+		<a href="../index.html">
+			<img src="assets/codewblox-logo.png" id="logo">
+			CodeWBlox
 		</a>
-		<a href="projects/editor.html"><button>Create a project</button></a>
-		<a href="projects/all.html"><button>Explore added projects</button></a>
-		<a href="projects/upload.html"><button>Upload a project</button></a>
+		<a href="editor/index.html"><button>Editor</button></a>
+		<a href="open-project/index.html"><button>Open project</button></a>
 	</div>
 	<div class="big">
-		<h1>CodeWBlox - Create art in a HTML canvas!</h1>
-		<h2><a href="projects/editor.html" class="hidden">Using this great editor</a></h2>
-	</div>
-	<div class="big inverted">
-		<h1>Explore all the projects</h1>
-		<h2><a href="projects/all.html" class="hidden">Pinned over here</a></h2>
+		<h1>Hello canvas!</h1>
+		<a href="editor/index.html"><h2>Draw in your own canvas with this editor</h2></a>
 	</div>
 	<div class="big">
-		<h1>Upload your project</h1>
-		<h2><a href="projects/upload.html" class="hidden">By uploading your file</a></h2>
+		<h1>Save your work</h1>
+		<a href="open-project/index.html"><h2>By saving it with cookies</h2></a>
 	</div>
-	<div class="big inverted">
-		<h1 id="numberOfProjects" style="font-size: 150px;"></h1>
-		<h2>projects are published</h2>
+	<div class="big">
+		<h1>Manage .cwb files</h1>
+		<h2>On your local hard drive</h2>
 	</div>
 </body>
 </html>
