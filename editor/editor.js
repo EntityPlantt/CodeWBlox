@@ -172,5 +172,5 @@ function saveCode() {
   setCookie("projects", projects.join(";"), 730);
 }
 function loadCode() {
-  location.replace("../open-project/index.html");
+  location.replace("../open-project");
 }
