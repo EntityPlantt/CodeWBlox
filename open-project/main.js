@@ -9,6 +9,9 @@ window.onload = function() {
 		document.getElementById("radios").innerHTML = "Sorry! You don't have any projects.<br><a href='../editor/index.html'>Get back</a>";
 		return;
 	}
+	while (projs.includes("")) {
+		projs.splice(projs.indexOf(""), 1);
+	}
 	for (var i = 0; i < projs.length; i++) {
 		var radio = document.createElement("input");
 		radio.type = "radio";
@@ -21,9 +24,6 @@ window.onload = function() {
 		document.getElementById("radios").appendChild(label);
 		document.getElementById("radios").appendChild(document.createElement("br"));
 	}
-	document.querySelector("div#radios input[type=radio]").remove();
-	document.querySelector("div#radios label").remove();
-	document.querySelector("div#radios br").remove();
 }
 function loadCode() {
 	var fileContent = getCookie(document.querySelector("input[name=projects]:checked").id);
