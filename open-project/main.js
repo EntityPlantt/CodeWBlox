@@ -30,3 +30,12 @@ function loadCode() {
 	setCookie("loaded-proj", fileContent, 730);
 	location.replace("../editor");
 }
+function deleteProj() {
+	if (confirm("Are you sure you want to delete that project?")) {
+		delCookie(document.querySelector("div#radios input[type=radio]:checked").id);
+		var array = getCookie("projects").split(";");
+		array.splice(array.indexOf(document.querySelector("div#radios input[type=radio]:checked").id.substring(5)), 1);
+		setCookie("projects", array.join(";"), 730);
+		location.reload(true);
+	}
+}

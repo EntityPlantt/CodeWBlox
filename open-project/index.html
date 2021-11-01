@@ -20,13 +20,7 @@
 		<h1>Pick a project from these</h1>
 		<div id="radios"></div>
 		<button onclick="loadCode()">Continue</button>
-		<button onclick="if (confirm('Are you sure you want to delete that project?')) {
-			delCookie(document.querySelector('div#radios input[type=radio]:checked').id);
-			var array = getCookie('projects').split(';');
-			array.splice(array.indexOf(document.querySelector('div#radios input[type=radio]:checked').innerText), 1);
-			setCookie('projects', array.join(';'), 730);
-			location.reload(true);
-		}">Delete project</button>
+		<button onclick="deleteProj()">Delete project</button>
 	</div>
 </body>
 </html>
