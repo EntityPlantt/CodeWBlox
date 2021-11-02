@@ -124,3 +124,12 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+span#unsavedChanges {
+	position: absolute;
+	top: 2.5vh;
+	font-size: 2.5vh;
+	right: 1vw;
+	text-anchor: middle;
+	color: white;
+	user-select: none;
+}

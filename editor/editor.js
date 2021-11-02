@@ -1,5 +1,12 @@
-var canvas, blocks, selectedBlocks = new Array(), intervals = new Array(), gradients = new Array();
+var canvas, blocks, selectedBlocks = new Array(), intervals = new Array(), gradients = new Array(), unsavedChanges = false;
+var confirmMessage = "It looks like you have unsaved changes. Do you want to exit?";
 
+window.addEventListener("beforeunload", function(event) {
+  if (unsavedChanges) {
+    (event || window.event).returnValue = confirmMessage; // IE
+    return confirmMessage; // Safari, Webkit, Chrome...
+  }
+});
 window.onload = function() {
   canvas = document.getElementById("preview").getContext("2d");
   blocks = document.querySelectorAll("templates[name='blocks'] template");
@@ -9,7 +16,11 @@ window.onload = function() {
     }
     for (var i = 0; i < document.querySelectorAll("div.block input").length; i++) {
       document.querySelectorAll("div.block input")[i].setAttribute("value", document.querySelectorAll("div.block input")[i].value);
+      document.querySelectorAll("div.block input")[i].onchange = function() {
+        unsavedChanges = true;
+      }
     }
+    document.getElementById("unsavedChanges").style.display = unsavedChanges ? "block" : "none";
   }, 42);
   for (var i = 0; i < blocks.length; i++) {
     blocks[i].content.querySelectorAll("div.block")[0].onclick = function() {
@@ -22,6 +33,7 @@ window.onload = function() {
       selectButton.innerText = "Select";
       node.appendChild(selectButton);
       document.getElementById("space").appendChild(node);
+      unsavedChanges = true;
     };
     document.getElementById("blocks").append(blocks[i].content);
   }
@@ -58,6 +70,7 @@ function dragElement(elmnt) {
   function elementDrag(e) {
     e = e || window.event;
     e.preventDefault();
+    unsavedChanges = true;
     // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
@@ -104,6 +117,7 @@ function moveBlock(block, newParent) {
   newParent.appendChild(node);
   block.remove();
   selectedBlocks = [];
+  unsavedChanges = true;
 }
 function moveBlockToSpace() {
   if (selectedBlocks.length > 0) {
@@ -112,8 +126,10 @@ function moveBlockToSpace() {
 }
 function disposeBlock() {
   selectedBlocks[0].classList.remove("selectedBlock");
-  if (selectedBlocks.length > 0)
+  if (selectedBlocks.length > 0) {
     selectedBlocks[0].remove();
+    unsavedChanges = true;
+  }
   selectedBlocks = [];
 }
 function runProgram() {
@@ -144,10 +160,17 @@ function runSnippet(snippetBlock) {
   }
 }
 function downloadCode() {
-  saveFile(prompt("Download as", "Untitled"), ".cwb", document.getElementById("space").innerHTML);
+  if (saveFile(prompt("Download as", "Untitled"), ".cwb", document.getElementById("space").innerHTML))
+    unsavedChanges = false;
 }
 function uploadCode() {
+  if (unsavedChanges) {
+    if (!confirm(confirmMessage)) {
+      return;
+    }
+  }
   readFile(".cwb", function(text) {document.getElementById("space").innerHTML = text;});
+  unsavedChanges = false;
 }
 function saveCode() {
   var projContent = document.getElementById("space").innerHTML;
@@ -173,6 +196,7 @@ function saveCode() {
   var projects = getCookie("projects").split(";");
   projects.push(projName);
   setCookie("projects", projects.join(";"), 730);
+  unsavedChanges = false;
 }
 function loadCode() {
   location.replace("../open-project");

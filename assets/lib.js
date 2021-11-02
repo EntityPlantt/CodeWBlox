@@ -16,11 +16,12 @@ function saveFile(name, extension, content) {
   downloadLink.href = "data:text/plain," + encodeURIComponent(content);
   var downloadName = name;
   if (downloadName == null)
-    return;
+    return false;
   if (downloadName.indexOf(extension) != downloadName.length - extension.length) // if the extension is not given
     downloadName += extension;
   downloadLink.download = downloadName;
   downloadLink.click();
+  return true;
 }
 function setCookie(cname, cvalue, exdays) {
   window.localStorage.setItem(cname, cvalue);
