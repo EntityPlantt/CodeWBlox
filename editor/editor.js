@@ -1,8 +1,27 @@
-var canvas, blocks, selectedBlocks = new Array(), intervals = new Array(), gradients = new Array(), unsavedChanges = false;
+var canvas, blocks, selectedBlocks = new Array(), intervals = new Array(), gradients = new Array();
 var confirmMessage = "It looks like you have unsaved changes. Do you want to exit?";
+var ctrlKeyPressEvent = {
+  on: function(key, func) {
+    this["key." + key] = func;
+  },
+  run: function(key) {
+    this["key." + key]();
+  }
+};
+
+var changes = [""], nowChange = 0, savedChange = 0;
+function changeIsMade() {
+  if (nowChange < changes.length - 1)
+    changes = changes.slice(0, nowChange + 1);
+  nowChange++;
+  changes.push(document.getElementById("space").innerHTML);
+}
+function setSaved() {
+  savedChange = changes[nowChange];
+}
 
 window.addEventListener("beforeunload", function(event) {
-  if (unsavedChanges) {
+  if (savedChange != changes[nowChange]) {
     (event || window.event).returnValue = confirmMessage; // IE
     return confirmMessage; // Safari, Webkit, Chrome...
   }
@@ -17,10 +36,10 @@ window.onload = function() {
     for (var i = 0; i < document.querySelectorAll("div.block input").length; i++) {
       document.querySelectorAll("div.block input")[i].setAttribute("value", document.querySelectorAll("div.block input")[i].value);
       document.querySelectorAll("div.block input")[i].onchange = function() {
-        unsavedChanges = true;
+        changeIsMade();
       }
     }
-    document.getElementById("unsavedChanges").style.display = unsavedChanges ? "block" : "none";
+    document.getElementById("unsavedChanges").style.display = (savedChange != changes[nowChange]) ? "block" : "none";
   }, 42);
   for (var i = 0; i < blocks.length; i++) {
     blocks[i].content.querySelectorAll("div.block")[0].onclick = function() {
@@ -33,7 +52,7 @@ window.onload = function() {
       selectButton.innerText = "Select";
       node.appendChild(selectButton);
       document.getElementById("space").appendChild(node);
-      unsavedChanges = true;
+      changeIsMade();
     };
     document.getElementById("blocks").append(blocks[i].content);
   }
@@ -44,6 +63,11 @@ window.onload = function() {
   if (getCookie("loaded-proj") != null) {
     document.getElementById("space").innerHTML = getCookie("loaded-proj");
     delCookie("loaded-proj");
+  }
+  document.onkeydown = function(e) {
+    e = e || window.event;
+    if (e.ctrlKey)
+      ctrlKeyPressEvent.run(e.keyCode);
   }
 }
 
@@ -79,7 +103,6 @@ function dragElement(elmnt) {
     if (elmnt.classList[0] == "block") {
       elmnt.style.top = (elmnt.offsetTop - pos2 - 5) + "px";
       elmnt.style.left = (elmnt.offsetLeft - pos1 - 5) + "px";
-      unsavedChanges = true;
     }
     else {
       elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
@@ -91,6 +114,7 @@ function dragElement(elmnt) {
     // stop moving when mouse button is released:
     document.onmouseup = null;
     document.onmousemove = null;
+    changeIsMade();
   }
 }
 function selectBlock(block) {
@@ -117,7 +141,7 @@ function moveBlock(block, newParent) {
   newParent.appendChild(node);
   block.remove();
   selectedBlocks = [];
-  unsavedChanges = true;
+  changeIsMade();
 }
 function moveBlockToSpace() {
   if (selectedBlocks.length > 0) {
@@ -128,7 +152,7 @@ function disposeBlock() {
   selectedBlocks[0].classList.remove("selectedBlock");
   if (selectedBlocks.length > 0) {
     selectedBlocks[0].remove();
-    unsavedChanges = true;
+    changeIsMade();
   }
   selectedBlocks = [];
 }
@@ -161,16 +185,16 @@ function runSnippet(snippetBlock) {
 }
 function downloadCode() {
   if (saveFile(prompt("Download as", "Untitled"), ".cwb", document.getElementById("space").innerHTML))
-    unsavedChanges = false;
+    setSaved();
 }
 function uploadCode() {
-  if (unsavedChanges) {
+  if (savedChange != changes[nowChange]) {
     if (!confirm(confirmMessage)) {
       return;
     }
   }
   readFile(".cwb", function(text) {document.getElementById("space").innerHTML = text;});
-  unsavedChanges = false;
+  setSaved();
 }
 function saveCode() {
   var projContent = document.getElementById("space").innerHTML;
@@ -196,8 +220,20 @@ function saveCode() {
   var projects = getCookie("projects").split(";");
   projects.push(projName);
   setCookie("projects", projects.join(";"), 730);
-  unsavedChanges = false;
+  setSaved();
 }
 function loadCode() {
   location.replace("../open-project");
 }
+function undoChanges() {
+  if (nowChange < 1) return;
+  nowChange--;
+  document.getElementById("space").innerHTML = changes[nowChange];
+}
+function redoChanges() {
+  if (nowChange + 1 >= changes.length) return;
+  nowChange++;
+  document.getElementById("space").innerHTML = changes[nowChange];
+}
+ctrlKeyPressEvent.on(90, undoChanges);
+ctrlKeyPressEvent.on(89, redoChanges);

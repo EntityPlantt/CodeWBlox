@@ -19,11 +19,13 @@
 		<button onclick="loadCode()">Load</button>
 		<button onclick="uploadCode()">Upload</button>
 		<button onclick="downloadCode()">Download</button>
-		<span id="unsavedChanges">Unsaved changes</span>
+		<button onclick="undoChanges()">Undo</button>
+		<button onclick="redoChanges()">Redo</button>
 	</div>
 	<div id="blocks"></div>
 	<div id="space"></div>
 	<canvas id="preview" draggable ondblclick="this.requestFullscreen()"></canvas>
+	<span id="unsavedChanges">Unsaved changes</span>
 </body>
 <templates name="blocks">
 	<!-- events -->
