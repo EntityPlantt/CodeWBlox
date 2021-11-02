@@ -70,7 +70,6 @@ function dragElement(elmnt) {
   function elementDrag(e) {
     e = e || window.event;
     e.preventDefault();
-    unsavedChanges = true;
     // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
@@ -80,6 +79,7 @@ function dragElement(elmnt) {
     if (elmnt.classList[0] == "block") {
       elmnt.style.top = (elmnt.offsetTop - pos2 - 5) + "px";
       elmnt.style.left = (elmnt.offsetLeft - pos1 - 5) + "px";
+      unsavedChanges = true;
     }
     else {
       elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
