@@ -7,7 +7,10 @@ window.onload = function() {
     for (var i = 0; i < document.querySelectorAll("[draggable]").length; i++) {
       dragElement(document.querySelectorAll("[draggable]")[i]);
     }
-  }, 1000);
+    for (var i = 0; i < document.querySelectorAll("div.block input").length; i++) {
+      document.querySelectorAll("div.block input")[i].setAttribute("value", document.querySelectorAll("div.block input")[i].value);
+    }
+  }, 42);
   for (var i = 0; i < blocks.length; i++) {
     blocks[i].content.querySelectorAll("div.block")[0].onclick = function() {
       var node = this.cloneNode(true);
