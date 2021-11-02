@@ -11,6 +11,7 @@ button {
 	font-family: sans-serif;
 	font-size: 15px;
 	border: hidden;
+	font-family: inherit;
 }
 button:hover {
 	background-color: darkviolet;
@@ -19,6 +20,10 @@ div#top img#logo {
 	image-rendering: optimizeSpeed;
 	width: 10vh;
 	height: 10vh;
+}
+div#top sub {
+	font-size: 3vh;
+	font-style: italic;
 }
 div#top {
 	font-size: 9vh;

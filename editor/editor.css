@@ -92,6 +92,7 @@ button.selectButton {
 	border: hidden;
 	border-radius: 5px;
 	padding: 5px;
+	font-family: 'Work Sans', sans-serif;
 }
 button.selectButton:hover {
 	background-color: lightblue;
