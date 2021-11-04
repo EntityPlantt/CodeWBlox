@@ -9,7 +9,7 @@ var ctrlKeyPressEvent = {
   }
 };
 
-var changes = [""], nowChange = 0, savedChange = 0;
+var changes, nowChange = 0, savedChange = 0;
 function changeIsMade() {
   if (nowChange < changes.length - 1)
     changes = changes.slice(0, nowChange + 1);
@@ -69,6 +69,7 @@ window.onload = function() {
     if (e.ctrlKey)
       ctrlKeyPressEvent.run(e.keyCode);
   }
+  changes = [document.getElementById("space").innerHTML];
 }
 
 function dragElement(elmnt) {
